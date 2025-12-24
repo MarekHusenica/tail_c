@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "circ_buffer.h"
+
 #define DEFAULT_LINE_COUNT 10
 
 inline void print_help();
@@ -57,16 +59,16 @@ int main(int argc, char** argv) {
                 curr_arg++;
             }
         }
-        if (file_name == NULL) {
-            fprintf(stderr, "ERROR: No file provided\n");
-            return 1;
-        }
     }
     else {
         if (argc > 1) fprintf(stderr, "ERROR: Too many arguments");
         print_help();
         return 0;
     }
+
+    FILE* file;
+    if (file_name != NULL) file = fopen(file_name, "r");
+    else file = stdin;
 
     printf("Number of lines: %ld\n", n_lines);
     printf("File name: %s\n", file_name);
