@@ -8,6 +8,9 @@ OBJS=tail.o circ_buffer.o
 VENV=.venv
 PYTEST=$(VENV)/bin/pytest
 
+VALGRIND=valgrind
+VFLAGS=--leak-check=full --show-leak-kinds=all --errors-to-stderr --error-exitcode=1
+
 all: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
@@ -28,6 +31,12 @@ $(VENV)/bin/activate:
 
 test: all venv
 	$(PYTEST) tests/
+
+memcheck: $(PROGRAM)
+	@echo "Line 1\nLine 2\n Line 3" > leak_test.txt
+	$(VALGRIND) $(VFLAGS) ./$(PROGRAM) leak_test.txt > /dev/null
+	@rm leak_test.txt
+	@echo "Memory check passed!"
 
 clean:
 	rm -f *.o $(PROGRAM)

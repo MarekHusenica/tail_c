@@ -25,4 +25,7 @@ jobs:
         sudo apt install -y build-essential python3-venv
 
     - name: Build and Run Tests
-      run: make
+      run: make test
+
+    - name: Run Memory Leak Check
+      run: make memcheck
