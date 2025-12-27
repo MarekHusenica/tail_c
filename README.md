@@ -16,7 +16,7 @@ A Unix-style `tail` utility written in **C11**, designed with memory efficiency 
 
 ## Tech Stack
 * **Core:** C11, GCC
-* **Testing:** Python 3, PyTest, Subprocess API
+* **Testing:** Python 3, PyTest, Subprocess API, Valgrind
 * **Automation:** GNU Make, GitHub Actions
 * **Environment:** Linux / WSL
 
@@ -27,4 +27,3 @@ A Unix-style `tail` utility written in **C11**, designed with memory efficiency 
 ├── Makefile             # Build and test automation
 └── .github/workflows/   # CI/CD pipeline configuration
 ```
-### TODO: Add valgrind memory leak testing
