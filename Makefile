@@ -9,7 +9,7 @@ VENV=.venv
 PYTEST=$(VENV)/bin/pytest
 
 VALGRIND=valgrind
-VFLAGS=--leak-check=full --show-leak-kinds=all --errors-to-stderr --error-exitcode=1
+VFLAGS=--leak-check=full --show-leak-kinds=all --error-exitcode=1
 
 all: $(PROGRAM)
 
