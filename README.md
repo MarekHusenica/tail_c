@@ -1,4 +1,4 @@
-# C-Tail: High-Performance Tail Implementation
+# C-Tail: Tail Implementation
 
 ![Build Status](https://github.com/MarekHusenica/tail_c/actions/workflows/tests.yml/badge.svg)
 ![Language](https://img.shields.io/badge/language-C11-blue.svg)
