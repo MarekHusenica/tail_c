@@ -22,7 +22,7 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt update
-        sudo apt install -y build-essential python3-venv
+        sudo apt install -y build-essential python3-venv valgrind
 
     - name: Build and Run Tests
       run: make test
