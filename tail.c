@@ -74,11 +74,20 @@ int main(int argc, char** argv) {
     circ_buffer_t buff = circ_buff_init(n_lines + 1);
     char* curr_line = NULL;
     size_t len = 0;
-    int reached_eof = 0;
+    int status = 0;
 
-    while (reached_eof != 1) {
-        reached_eof = get_line(&curr_line, &len, file);
-        circ_buff_put(&buff, curr_line);
+    while (status != 1) {
+        status = get_line(&curr_line, &len, file);
+
+        if (status == -1) {
+            fprintf(stderr, "Memory aloccation error\n");
+            break;
+        }
+
+        if (curr_line) {
+            circ_buff_put(&buff, curr_line);
+            curr_line = NULL;
+        }
     }
 
     for (long unsigned int i = 0; i < n_lines; ++i) {
@@ -103,14 +112,15 @@ int get_line(char** line, size_t* len, FILE* file) {
     size_t buff_size = 80;
     char* buff = malloc(buff_size * sizeof(char));
     if (!buff) return -1;
+
     size_t i = 0;
     int eof_flag = 0;
 
     while (1) {
 
-        if (i == (buff_size - 1)) {
+        if (i >= (buff_size - 1)) {
             char *tmp = realloc(buff, 2*buff_size*sizeof(char));
-            if (tmp == NULL) {
+            if (!tmp) {
                 free(buff);
                 return -1;
             }
@@ -120,32 +130,31 @@ int get_line(char** line, size_t* len, FILE* file) {
 
         int c = fgetc(file);
         if (c == EOF) {
-            if (i == 0) {
-                free(buff);
-                return 2;
-            }
             eof_flag = 1;
             break;
         }
-        else if (c == '\n') {
-            buff[i] = '\n';
-            break;
-        }
-        else buff[i] = c;
 
-        i++;
+        buff[i++] = c;
+
+        if (c == '\n') break;
     }
 
-    *line = malloc((i + 2) * sizeof(char));
-    if (*line == NULL) {
+    if (eof_flag && i == 0) {
+        free(buff);
+        *line = NULL;
+        return 1;
+    }
+
+    *line = malloc((i + 1) * sizeof(char));
+    if (!*line) {
         free(buff);
         return -1;
     }
-    memcpy(*line, buff, i + 1);
-    free(buff);
 
-    (*line)[i+1] = '\0';
+    memcpy(*line, buff, i);
+    (*line)[i] = '\0';
     *len = i;
 
+    free(buff);
     return eof_flag;
 }

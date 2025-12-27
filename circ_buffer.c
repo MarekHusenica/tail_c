@@ -33,18 +33,21 @@ int circ_buff_get(circ_buffer_t* buffer, char** str) {
     }
 
     *str = buffer->data[buffer->read_idx];
+
     buffer->read_idx = (buffer->read_idx + 1) % buffer->size;
     return 1;
 }
 
 void circ_buff_free(circ_buffer_t* buffer) {
-    if (!buffer) return;
+    if (!buffer || !buffer->data) return;
 
-    int i = buffer->read_idx;
-    while (i != buffer->write_idx) {
-        free(buffer->data[i]);
-        i = (i + 1) % buffer->size;
+    for (int i = 0; i < buffer->size; ++i) {
+        if (buffer->data[i] != NULL) {
+            free(buffer->data[i]);
+            buffer->data[i] = NULL;
+        }
     }
 
     free(buffer->data);
+    buffer->data = NULL;
 }
