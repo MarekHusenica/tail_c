@@ -25,4 +25,4 @@ jobs:
         sudo apt install -y build-essential python3-venv
 
     - name: Build and Run Tests
-      run: make test
+      run: make
