@@ -19,6 +19,7 @@ circ_buffer_t* circ_buff_init(int size) {
     buffer->data = calloc(size, sizeof(char*));
     if (!buffer->data) {
         free(buffer);
+        buffer = NULL;
         return NULL;
     }
 
@@ -53,15 +54,20 @@ int circ_buff_get(circ_buffer_t* buffer, char** str) {
 }
 
 void circ_buff_free(circ_buffer_t* buffer) {
-    if (!buffer || !buffer->data) return;
+    if (!buffer) return;
 
-    for (int i = 0; i < buffer->size; ++i) {
-        if (buffer->data[i] != NULL) {
-            free(buffer->data[i]);
-            buffer->data[i] = NULL;
+    if (buffer->data) {
+        for (int i = 0; i < buffer->size; ++i) {
+            if (buffer->data[i] != NULL) {
+                free(buffer->data[i]);
+                buffer->data[i] = NULL;
+            }
         }
+
+        free(buffer->data);
+        buffer->data = NULL;
     }
 
-    free(buffer->data);
-    buffer->data = NULL;
+    free(buffer);
+    buffer = NULL;
 }
