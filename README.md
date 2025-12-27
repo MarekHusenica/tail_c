@@ -14,7 +14,7 @@ A Unix-style `tail` utility written in **C11**, designed with memory efficiency 
 * **Automated CI/CD:** Integrated with **GitHub Actions** to trigger automated builds and test execution on every push.
 * **Robust Build System:** Managed via a `Makefile` for streamlined compilation and environment setup.
 
-## 🛠 Tech Stack
+## Tech Stack
 * **Core:** C11, GCC
 * **Testing:** Python 3, PyTest, Subprocess API
 * **Automation:** GNU Make, GitHub Actions
