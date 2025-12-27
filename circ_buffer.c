@@ -1,13 +1,27 @@
 #include <stdlib.h>
 #include "circ_buffer.h"
 
+struct circ_buffer {
+    int write_idx;
+    int read_idx;
+    int size;
+    char** data;
+};
 
-circ_buffer_t circ_buff_init(int size) {
-    circ_buffer_t buffer = {0,0,0,NULL};
-    buffer.size = size;
+circ_buffer_t* circ_buff_init(int size) {
+    circ_buffer_t* buffer = malloc(sizeof(circ_buffer_t));
+    if (!buffer) return NULL;
 
-    buffer.data = calloc(size, sizeof(char*));
-    
+    buffer->size = size;
+    buffer->read_idx = 0;
+    buffer->write_idx = 0;
+
+    buffer->data = calloc(size, sizeof(char*));
+    if (!buffer->data) {
+        free(buffer);
+        return NULL;
+    }
+
     return buffer;
 }
 
